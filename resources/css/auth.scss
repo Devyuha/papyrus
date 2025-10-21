@@ -1,17 +1,88 @@
-@import "~bootstrap/scss/bootstrap";
+// @import "~bootstrap/scss/bootstrap";
+@use "./auth/base";
 
 .min-h-full {
   min-height: 100vh;
 }
 
 html, body {
-  min-height: 100vh;
-  overflow-x: hidden;
-  max-width: 100%;
+  @apply min-h-full overflow-x-hidden max-w-full;
 }
 
-.register-div {
-  border: 1px solid #dee2e6;
-  padding: 10px;
-  border-radius: 10px;
+.container {
+  @apply w-full min-h-full;
+}
+
+// ? Alerts
+.alert {
+    @apply px-3 py-3 w-full rounded-sm text-sm tracking-[0.5px] flex flex-row items-center justify-between mb-2;
+
+    &.alert-success {
+        @apply bg-success text-light;
+    }
+
+    &.alert-danger {
+        @apply bg-danger text-light;
+    }
+
+    &.alert-warning {
+        @apply bg-warning text-dark;
+    }
+
+    &.alert-info {
+        @apply bg-info text-light;
+    }
+
+    &.alert-primary {
+        @apply bg-primary text-light;
+    }
+
+    .alert-dismissable {
+        //
+    }
+}
+
+.auth-page {
+  @apply flex min-h-full w-full items-start md:items-center justify-center p-2;
+
+  .auth-dialog {
+    @apply w-full border border-solid border-dark-400;
+    @apply md:w-1/3;
+
+    .header {
+      @apply p-3 bg-primary border-b border-solid border-dark-400;
+
+      h2 {
+        @apply text-lg font-sans font-semibold text-light;
+      }
+    }
+
+    .body {
+      @apply p-3;
+    }
+  }
+}
+
+.form-group {
+  @apply flex flex-col gap-1 mb-2;
+
+  .form-label {
+    @apply font-sans text-base;
+  }
+
+  .form-control {
+    @apply w-full border border-solid border-dark-400 p-2;
+  }
+
+  .link {
+    @apply font-sans text-base font-medium text-primary-400 underline;
+  }
+
+  .form-submit {
+    @apply w-full bg-primary text-light font-sans p-2 shadow shadow-dark-300 transition;
+
+    &:hover {
+      @apply shadow-none;
+    }
+  }
 }

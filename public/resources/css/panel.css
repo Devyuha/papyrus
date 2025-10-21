@@ -600,6 +600,9 @@ video {
 .flex-col{
   flex-direction: column;
 }
+.items-start{
+  align-items: flex-start;
+}
 .items-center{
   align-items: center;
 }
@@ -617,6 +620,9 @@ video {
 }
 .gap-4{
   gap: 1rem;
+}
+.overflow-x-hidden{
+  overflow-x: hidden;
 }
 .rounded{
   border-radius: 0.25rem;
@@ -774,9 +780,16 @@ video {
 .text-center{
   text-align: center;
 }
+.font-sans{
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
 .text-2xl{
   font-size: 1.5rem;
   line-height: 2rem;
+}
+.text-base{
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
 .text-lg{
   font-size: 1.125rem;
@@ -814,6 +827,10 @@ video {
   --tw-text-opacity: 1;
   color: rgb(181 187 199 / var(--tw-text-opacity, 1));
 }
+.text-light{
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
 .text-light-100{
   --tw-text-opacity: 1;
   color: rgb(235 244 246 / var(--tw-text-opacity, 1));
@@ -821,6 +838,10 @@ video {
 .text-primary{
   --tw-text-opacity: 1;
   color: rgb(22 153 118 / var(--tw-text-opacity, 1));
+}
+.text-primary-400{
+  --tw-text-opacity: 1;
+  color: rgb(0 118 201 / var(--tw-text-opacity, 1));
 }
 .underline{
   text-decoration-line: underline;
@@ -843,6 +864,15 @@ video {
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-sm{
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-dark-300{
+  --tw-shadow-color: #b5bbc7;
+  --tw-shadow: var(--tw-shadow-colored);
 }
 .outline-none{
   outline: 2px solid transparent;
@@ -1527,5 +1557,8 @@ body{
   }
   .md\:col-span-8{
     grid-column: span 8 / span 8;
+  }
+  .md\:items-center{
+    align-items: center;
   }
 }

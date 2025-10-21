@@ -1,36 +1,30 @@
 <?php $template->includes("layouts/header") ?>
 
-<div class="container min-h-full">
-    <div class="row min-h-full align-items-center justify-content-center">
-        <div class="col-md-8 col-lg-6 register-div">
-            <div class="header">
-                <h2>Reset Password</h2>
-            </div>
-            <div class="body">
-                <?php $template->includes("includes/messages") ?>
-                <form method="post" action="<?= route("auth.reset-password") ?>">
-                    <?= csrf_field() ?>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="mb-3">
-                                <label class="mb-3" for="password">Password</label>
-                                <input type="password" class="form-control" name="password" id="password" required />
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="mb-3">
-                                <label class="mb-3" for="confirm_password">Confirm Password</label>
-                                <input type="password" class="form-control" name="confirm_password" id="confirm_password" required />
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-large btn-primary">Reset</button>
-                        </div>
+<div class="auth-page">
+    <div class="auth-dialog">
+        <div class="header">
+            <h2>Reset Password</h2>
+        </div>
+        <div class="body">
+            <?php $template->includes("includes/messages") ?>
+            <form method="post" action="<?= route("auth.reset-password") ?>">
+                <?= csrf_field() ?>
+                <div class="flex flex-col gap-2">
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <input type="password" class="form-control" name="password" id="password" required />
                     </div>
-                </form>
-            </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="confirm_password">Confirm Password</label>
+                        <input type="password" class="form-control" name="confirm_password" id="confirm_password" required />
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="form-submit">Reset</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -51,6 +51,9 @@
                                     <a href="<?= route("panel.books.edit", ["id" => $book['id']]) ?>">
                                         <button class="btn btn-sm btn-primary">Edit</button>
                                     </a> 
+                                    <a href="">
+                                        <button class="btn btn-sm btn-info">View</button>
+                                    </a>
                                 </td>
                             </tr>
                         <?php endforeach ?>

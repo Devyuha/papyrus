@@ -12,7 +12,7 @@
 
     <div class="section-body">
         <?php $template->includes("bookform", [
-            "formUrl" => route("panel.books.add"),
+            "formUrl" => route("panel.books.update", ["id" => $book["id"]]),
             "title" => $book["title"],
             "description" => $book["description"],
             "slug" => $book["slug"],

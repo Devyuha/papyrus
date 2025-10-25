@@ -10,6 +10,7 @@ use Module\PanelBooks\Queries\GetBookCount;
 use Module\PanelBooks\Queries\InsertBook;
 use Module\PanelBooks\Queries\PaginateBooks;
 use Module\PanelBooks\Queries\FindBookById;
+use Module\PanelBooks\Queries\UpdateBookById;
 
 class BookService {
     public function addBook($request) {
@@ -105,6 +106,67 @@ class BookService {
         }
 
         return $result;
+    }
+
+    public function updateBook($request, $id) {
+        $result = new ServiceResult();
+
+        try {
+            $queryClass = $this->makeUpdateQuery($request, $id);
+            $query = Pdo::execute($queryClass);
+
+            $result->setSuccess(true);
+            $result->setMessage("Updated book successfully, rows effected : " . $query->getAffectedRows());
+        } catch(Exception $e) {
+            $result->setSuccess(false);
+            $result->setMessage($e->getMessage());
+        }
+
+        return $result;
+    }
+
+    private function makeUpdateQuery($request, $id) {
+        $query = new UpdateBookById();
+        $query->init();
+        $data = [];
+        $data[":id"] = $id;
+        $metadata = [
+            "title" => $request->sanitizeInput("meta_title") ?? "",
+            "tags" => $request->sanitizeInput("meta_tags") ?? "",
+            "description" => $request->sanitizeInput("meta_description") ?? ""
+        ];
+
+        if($request->hasInput("title")) {
+            $query->update("title", ":title");
+            $data[":title"] = $request->sanitizeInput("title");
+        }
+
+        if ($request->hasInput("description")) {
+            $query->update("description", ":description");
+            $data[":description"] = $request->input("description");
+        }
+
+        if ($request->hasInput("slug")) {
+            $query->update("slug", ":slug");
+            $data[":slug"] = $request->sanitizeInput("slug");
+        }
+
+        if ($request->hasInput("tags")) {
+            $query->update("tags", ":tags");
+            $data[":tags"] = $request->sanitizeInput("tags");
+        }
+
+        if ($request->hasFile("banner")) {
+            $banner = $this->uploadBannerImage($request->file("banner"));
+            $query->update("banner", ":banner");
+            $data[":banner"] = $banner;
+        }
+        $query->update("metadata", ":metadata");
+        $data[":metadata"] = json_encode($metadata);
+        $query->where("WHERE id = :id");
+        $query->setArgs($data);
+
+        return $query;
     }
 
     private function getMetaData($data)

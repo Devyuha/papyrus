@@ -6,7 +6,7 @@ use Module\PanelBooks\Controllers\PanelBooksController;
 use Module\PanelBooks\Controllers\CreateController;
 use Module\PanelBooks\Controllers\EditController;
 
-Router::get("/panel/books", [PanelBooksController::class, 'index'])
+Router::get("/panel/books", [PanelBooksController::class, "index"])
     ->addMiddleware(CheckAuthMiddleware::class)
     ->name("panel.books");
 
@@ -21,3 +21,7 @@ Router::post("/panel/books/create", [CreateController::class, "addBook"])
 Router::get("/panel/books/{id}/edit", [EditController::class, "index"])
     ->addMiddleware(CheckAuthMiddleware::class)
     ->name("panel.books.edit");
+
+Router::post("/panel/books/{id}/edit", [EditController::class, "update"])
+    ->addMiddleware(CheckAuthMiddleware::class)
+    ->name("panel.books.update");

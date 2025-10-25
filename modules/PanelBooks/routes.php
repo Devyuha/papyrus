@@ -25,3 +25,7 @@ Router::get("/panel/books/{id}/edit", [EditController::class, "index"])
 Router::post("/panel/books/{id}/edit", [EditController::class, "update"])
     ->addMiddleware(CheckAuthMiddleware::class)
     ->name("panel.books.update");
+
+Router::patch("/panel/books/{id}/status", [EditController::class, "updateStatus"])
+    ->addMiddleware(CheckAuthMiddleware::class)
+    ->name("panel.books.status");

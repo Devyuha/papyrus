@@ -6,6 +6,7 @@ use Module\PanelBooks\Requests\UpdateBookRequest;
 use Papyrus\Http\Controller;
 use Papyrus\Support\Facades\Flash;
 use Module\PanelBooks\Services\BookService;
+use Module\PanelBooks\Requests\UpdateStatusRequest;
 
 class EditController extends Controller
 {
@@ -36,6 +37,21 @@ class EditController extends Controller
         $response = $service->updateBook($request, $id);
         $status = $response->getSuccess() ? "success" : "error";
         Flash::make($status, $response->getMessage());
+        return response()->redirect(route("panel.books"));
+    }
+
+    public function updateStatus($id) {
+        $request = new UpdateStatusRequest();
+        if(!$request->validated()) {
+            $request->remember();
+            Flash::make("error", $request->errors());
+            return response()->redirect(route("panel.books"));
+        }
+
+        $service = new BookService();
+        $result = $service->updateBookStatus($request, $id);
+        $status = $result->getSuccess() ? "success" : "error";
+        Flash::make($status, $result->getMessage());
         return response()->redirect(route("panel.books"));
     }
 }

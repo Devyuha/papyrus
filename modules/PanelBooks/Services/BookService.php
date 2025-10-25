@@ -11,6 +11,7 @@ use Module\PanelBooks\Queries\InsertBook;
 use Module\PanelBooks\Queries\PaginateBooks;
 use Module\PanelBooks\Queries\FindBookById;
 use Module\PanelBooks\Queries\UpdateBookById;
+use Module\PanelBooks\Queries\UpdateBookStatus;
 
 class BookService {
     public function addBook($request) {
@@ -118,6 +119,30 @@ class BookService {
             $result->setSuccess(true);
             $result->setMessage("Updated book successfully, rows effected : " . $query->getAffectedRows());
         } catch(Exception $e) {
+            $result->setSuccess(false);
+            $result->setMessage($e->getMessage());
+        }
+
+        return $result;
+    }
+
+    public function updateBookStatus($request, $id) {
+        $result = new ServiceResult();
+
+        try {
+            $initialStatus = $request->sanitizeInput("status", "draft");
+            $status = $initialStatus === "published" ? "draft" : "published";
+            unset($initialStatus);
+            $query = Pdo::execute(new updateBookStatus([
+                ":status" => $status,
+                ":id" => $id
+            ]));
+            if (!$query->getAffectedRows()) {
+                throw new Exception("Error in updating status");
+            }
+            $result->setSuccess(true);
+            $result->setMessage("Book status has been updated successfully");
+        } catch (Exception $e) {
             $result->setSuccess(false);
             $result->setMessage($e->getMessage());
         }

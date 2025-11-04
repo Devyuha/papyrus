@@ -37,7 +37,7 @@
                                 <td><?= $book["title"] ?? "" ?></td>
                                 <td><?= $book["created_at"] ?? "" ?></td>
                                 <td>
-                                    <form action='<?= route("panel.articles.status", ["id" => $book["id"]]) ?>' method="POST" onsubmit="return confirm('Are you sure you want to update?')">
+                                    <form action='<?= route("panel.books.status", ["id" => $book["id"]]) ?>' method="POST" onsubmit="return confirm('Are you sure you want to update?')">
                                         <?= form_method("PATCH") ?>
                                         <input type="hidden" name="status" value="<?= $book['status'] ?? 'draft' ?>" />
                                         <?php if ($book["status"] === "published") : ?>
@@ -51,6 +51,9 @@
                                     <a href="<?= route("panel.books.edit", ["id" => $book['id']]) ?>">
                                         <button class="btn btn-sm btn-primary">Edit</button>
                                     </a> 
+                                    <a href="">
+                                        <button class="btn btn-sm btn-info">View</button>
+                                    </a>
                                 </td>
                             </tr>
                         <?php endforeach ?>

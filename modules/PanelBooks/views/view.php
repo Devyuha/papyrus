@@ -1,8 +1,8 @@
 <?php $template->includes("includes/header", null, "Panel") ?>
 
 <?php $template->includes("includes/pagebar", [
-    "pageTitle" => "Create New Book",
-    "pageNavs" => ["Home", "Books", "Create"],
+    "pageTitle" => "Books",
+    "pageNavs" => ["Home", "Books", $book["title"]],
     "buttons" => [
         [
             "link" => route("panel.books"),
@@ -14,9 +14,9 @@
 
 <div class="content-section">
     <div class="section-body">
-        <?php $template->includes("bookform", [
-            "formUrl" => route("panel.books.add")
-        ], "PanelBooks") ?>
+        <?php $this->includes("includes/messages", null, "Auth") ?>
+
+        <p>This is a book view page</p>
     </div>
 </div>
 

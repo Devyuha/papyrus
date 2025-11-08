@@ -2,19 +2,17 @@
 
 <?php $template->includes("includes/pagebar", [
     "pageTitle" => "Books",
-    "pageNavs" => ["Home", "Books"]
+    "pageNavs" => ["Home", "Books"],
+    "buttons" => [
+        [
+            "link" => route("panel.books.create"),
+            "class" => "btn btn-sm btn-primary",
+            "text" => "Create"
+        ]
+    ]
 ], "Panel") ?>
 
 <div class="content-section">
-    <div class="section-header">
-        <div class="d-flex justify-content-between align-content-center">
-            <span class="title">Books</span>
-            <a href="<?= route("panel.books.create") ?>">
-                <button class="btn btn-sm btn-primary">Create</button>
-            </a>
-        </div>
-    </div>
-
     <div class="section-body">
         <?php $this->includes("includes/messages", null, "Auth") ?>
 
@@ -51,7 +49,7 @@
                                     <a href="<?= route("panel.books.edit", ["id" => $book['id']]) ?>">
                                         <button class="btn btn-sm btn-primary">Edit</button>
                                     </a> 
-                                    <a href="">
+                                    <a href="<?= route("panel.books.view", ["id" => $book['id']]) ?>">
                                         <button class="btn btn-sm btn-info">View</button>
                                     </a>
                                 </td>

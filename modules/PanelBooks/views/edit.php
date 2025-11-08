@@ -1,15 +1,18 @@
 <?php $template->includes("includes/header", null, "Panel") ?>
 
-<div class="content-section">
-    <div class="section-header">
-        <div class="d-flex justify-content-between align-content-center">
-            <span class="title">Edit Book</span>
-            <a href="<?= route("panel.books") ?>">
-                <button class="btn btn-sm btn-warning">Back</button>
-            </a>
-        </div>
-    </div>
+<?php $template->includes("includes/pagebar", [
+    "pageTitle" => "Edit Book",
+    "pageNavs" => ["Home", "Books", "Edit"],
+    "buttons" => [
+        [
+            "link" => route("panel.books"),
+            "class" => "btn btn-sm btn-warning",
+            "text" => "Back"
+        ]
+    ]
+], "Panel") ?>
 
+<div class="content-section">
     <div class="section-body">
         <?php $template->includes("bookform", [
             "formUrl" => route("panel.books.update", ["id" => $book["id"]]),

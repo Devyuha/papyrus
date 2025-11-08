@@ -1,8 +1,8 @@
 
         <!-- Footer -->
-        <footer class="footer">
+        <!-- <footer class="footer">
             <p>&copy; 2025 Papyrus.</p>
-        </footer>
+        </footer> -->
     </main>
 
 <script src="<?= asset("resources/js/panel.js") ?>"></script>

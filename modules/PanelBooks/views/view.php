@@ -2,19 +2,17 @@
 
 <?php $template->includes("includes/pagebar", [
     "pageTitle" => "Books",
-    "pageNavs" => ["Home", "Books", $book["title"]]
+    "pageNavs" => ["Home", "Books", $book["title"]],
+    "buttons" => [
+        [
+            "link" => route("panel.books"),
+            "class" => "btn btn-sm btn-warning",
+            "text" => "Back"
+        ]
+    ]
 ], "Panel") ?>
 
 <div class="content-section">
-    <div class="section-header">
-        <div class="d-flex justify-content-between align-content-center">
-            <span class="title">Books</span>
-            <a href="<?= route("panel.books.create") ?>">
-                <button class="btn btn-sm btn-primary">Create</button>
-            </a>
-        </div>
-    </div>
-
     <div class="section-body">
         <?php $this->includes("includes/messages", null, "Auth") ?>
 

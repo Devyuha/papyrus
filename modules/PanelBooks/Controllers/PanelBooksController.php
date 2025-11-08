@@ -21,5 +21,20 @@ class PanelBooksController extends Controller
 
         return view("listing", $response->getData())->module("PanelBooks")->render();
     }
+
+    public function viewBook($id) {
+        $service = new BookService();
+        $result = $service->findBookById($id);
+        if(!$result->getSuccess()) {
+            Flash::make("error", $result->getMessage());
+            return response()->redirect(route("panel.books"));
+        }
+
+        $data = $result->getData();
+        $book = $data["book"];
+        return view("view", compact("book"))
+                ->module("PanelBooks")
+                ->render();
+    }
 }
 

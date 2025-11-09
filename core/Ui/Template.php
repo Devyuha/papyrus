@@ -10,6 +10,7 @@ class Template
     private $path;
     private $args;
     private $module;
+    private array $componentStack = [];
 
     public function __construct(string $path, array $args = [])
     {
@@ -58,6 +59,43 @@ class Template
         (function () use ($viewPath, $args) {
             extract($args);
             include $viewPath;
+        })();
+    }
+
+    public function component(string $component, array|null $props = null, ?string $module = null): void {
+        ob_start();
+        $this->componentStack[] = [
+            "component" => $component,
+            "props" => $props,
+            "module" => $module
+        ];
+    }
+
+    public function endComponent(): void {
+        $content = ob_get_clean();
+        $current = array_pop($this->componentStack);
+
+        $this->renderComponent(
+            $current["component"],
+            $current["props"],
+            $content,
+            $current["module"]
+        );
+    }
+
+    public function renderComponent(string $component, array|null $props, string $slot, ?string $module = null): void {
+        $path = $this->getPath($component, $module);
+
+        if(!file_exists($path)) {
+            echo "Component " . $component . " doesn't exist";
+            return;
+        }
+
+        (function () use ($path, $props, $slot) {
+            $props = isset($props) ? $props : [];
+            extract($props);
+            $slot = $slot ?? "";
+            include $path;
         })();
     }
 

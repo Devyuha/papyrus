@@ -75,7 +75,7 @@ class Template
         $content = ob_get_clean();
         $current = array_pop($this->componentStack);
 
-        $this->render(
+        $this->renderComponent(
             $current["component"],
             $current["props"],
             $content,
@@ -83,11 +83,18 @@ class Template
         );
     }
 
-    public function renderComponent(string $component, array $props, string $slot, ?string $module = null): void {
+    public function renderComponent(string $component, array|null $props, string $slot, ?string $module = null): void {
         $path = $this->getPath($component, $module);
 
-        (function () use ($path, $props) {
+        if(!file_exists($path)) {
+            echo "Component " . $component . " doesn't exist";
+            return;
+        }
+
+        (function () use ($path, $props, $slot) {
+            $props = isset($props) ? $props : [];
             extract($props);
+            $slot = $slot ?? "";
             include $path;
         })();
     }

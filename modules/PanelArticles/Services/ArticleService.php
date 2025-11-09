@@ -6,15 +6,18 @@ use Papyrus\Database\Pdo;
 use Papyrus\Support\Storage;
 use Exception;
 use Module\Main\ServiceResult;
+use Module\PanelArticles\Repositories\ArticleRepository;
 use Module\PanelArticles\Queries\InsertArticle;
-use Module\PanelArticles\Queries\PaginateArticles;
-use Module\PanelArticles\Queries\GetArticleCount;
-use Module\PanelArticles\Queries\FindArticleById;
 use Module\PanelArticles\Queries\UpdateArticleById;
-use Module\PanelArticles\Queries\UpdateArticleStatus;
 
 class ArticleService
 {
+    private ArticleRepository $articleRepository;
+
+    public function __construct() {
+        $this->articleRepository = new ArticleRepository();
+    }
+
     public function addArticle($request)
     {
         $result = new ServiceResult();
@@ -124,16 +127,13 @@ class ArticleService
         $result = new ServiceResult();
 
         try {
-            $totalRows = (int) $this->getArticleCount();
+            $totalRows = (int) $this->articleRepository->getCount();
             $limit = 10;
             $currentPage = (int) $request->param("page") ?? 1;
             $currentPage = max(1, $currentPage);
             $totalPages = ceil($totalRows / $limit);
             $offset = ($currentPage - 1) * $limit;
-            $query = Pdo::execute(new PaginateArticles([
-                ":limit" => (int) $limit,
-                ":offset" => (int) $offset
-            ]));
+            $query = $this->articleRepository->getPaginatedListing($limit, $offset);
 
             $result->setSuccess(true);
             $result->setData([
@@ -145,14 +145,6 @@ class ArticleService
         }
 
         return $result;
-    }
-
-    private function getArticleCount()
-    {
-        $query = Pdo::execute(new GetArticleCount());
-        $count = $query->first()["count"] ?? 0;
-
-        return (int) $count;
     }
 
     private function getBannerUrl($banner)
@@ -167,7 +159,7 @@ class ArticleService
         $result = new ServiceResult();
 
         try {
-            $query = Pdo::execute(new FindArticleById([":id" => $id]));
+            $query = $this->articleRepository->findById($id);
             if ($query->count() > 0) {
                 $article = $query->first();
                 $metadata = $this->getMetaData($article["metadata"]);
@@ -204,11 +196,7 @@ class ArticleService
         try {
             $initialStatus = $request->sanitizeInput("status", "draft");
             $status = $initialStatus === "published" ? "draft" : "published";
-            unset($initialStatus);
-            $query = Pdo::execute(new updateArticleStatus([
-                ":status" => $status,
-                ":id" => $id
-            ]));
+            $query = $this->articleRepository->updateStatus($id, $status);
             if (!$query->getAffectedRows()) {
                 throw new Exception("Error in updating status");
             }

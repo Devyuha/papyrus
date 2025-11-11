@@ -1,6 +1,7 @@
 <?php
 
 use Module\Auth\Facades\AuthUser;
+use Papyrus\Support\Storage;
 
 function form_method($method = "DELETE")
 {
@@ -32,4 +33,15 @@ function sidebar_options($param = "dashboard")
     ];
 
     return $list[$param] ?? [];
+}
+
+function upload_banner_image($file)
+{
+    $name = date("Ymdhsi");
+    $storage = Storage::open($file, $name, "banners");
+    if ($storage->upload()) {
+        return $storage->getName();
+    }
+
+    return null;
 }

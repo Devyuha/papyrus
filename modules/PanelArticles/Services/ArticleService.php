@@ -26,7 +26,7 @@ class ArticleService
             $query = Pdo::execute(new InsertArticle([
                 ":title" => $request->sanitizeInput("title"),
                 ":content" => $request->input("content"),
-                ":banner" => $this->uploadBannerImage($request->file("banner")),
+                ":banner" => upload_banner_image($request->file("banner")),
                 ":tags" => $request->sanitizeInput("tags"),
                 ":slug" => $request->sanitizeInput("slug"),
                 ":metadata" => json_encode([
@@ -53,7 +53,7 @@ class ArticleService
         $result = new ServiceResult();
 
         try {
-            $queryClass = $this->makeUpdateQuery($request, $id);
+            $queryClass = $this->articleRepository->updateById($id, $request);
             $query = Pdo::execute($queryClass);
 
             $result->setSuccess(true);
@@ -64,62 +64,6 @@ class ArticleService
         }
 
         return $result;
-    }
-
-    private function makeUpdateQuery($request, $id)
-    {
-        $query = new UpdateArticleById();
-        $query->init();
-        $data = [];
-        $data[":id"] = $id;
-        $metadata = [
-            "title" => $request->sanitizeInput("meta_title") ?? "",
-            "tags" => $request->sanitizeInput("meta_tags") ?? "",
-            "description" => $request->sanitizeInput("meta_description") ?? ""
-        ];
-
-        if ($request->hasInput("title")) {
-            $query->update("title", ":title");
-            $data[":title"] = $request->sanitizeInput("title");
-        }
-
-        if ($request->hasInput("content")) {
-            $query->update("content", ":content");
-            $data[":content"] = $request->input("content");
-        }
-
-        if ($request->hasInput("slug")) {
-            $query->update("slug", ":slug");
-            $data[":slug"] = $request->sanitizeInput("slug");
-        }
-
-        if ($request->hasInput("tags")) {
-            $query->update("tags", ":tags");
-            $data[":tags"] = $request->sanitizeInput("tags");
-        }
-
-        if ($request->hasFile("banner")) {
-            $banner = $this->uploadBannerImage($request->file("banner"));
-            $query->update("banner", ":banner");
-            $data[":banner"] = $banner;
-        }
-        $query->update("metadata", ":metadata");
-        $data[":metadata"] = json_encode($metadata);
-        $query->where("WHERE id = :id");
-        $query->setArgs($data);
-
-        return $query;
-    }
-
-    private function uploadBannerImage($file)
-    {
-        $name = date("Ymdhsi");
-        $storage = Storage::open($file, $name, "banners");
-        if ($storage->upload()) {
-            return $storage->getName();
-        }
-
-        return null;
     }
 
     public function getArticleListing($request)

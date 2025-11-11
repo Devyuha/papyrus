@@ -78,7 +78,7 @@
             $query->where("WHERE id = :id");
             $query->setArgs($data);
 
-            return $query;
+            return Pdo::execute($query);
         }
 
         public function create($request) {

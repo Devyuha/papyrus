@@ -2,8 +2,6 @@
 
 namespace Module\PanelArticles\Services;
 
-use Papyrus\Database\Pdo;
-use Papyrus\Support\Storage;
 use Exception;
 use Module\Main\ServiceResult;
 use Module\PanelArticles\Repositories\ArticleRepository;
@@ -40,8 +38,7 @@ class ArticleService
         $result = new ServiceResult();
 
         try {
-            $queryClass = $this->articleRepository->updateById($id, $request);
-            $query = Pdo::execute($queryClass);
+            $query = $this->articleRepository->updateById($id, $request);
 
             $result->setSuccess(true);
             $result->setMessage("Updated article successfully, rows effected : " . $query->getAffectedRows());
@@ -78,13 +75,6 @@ class ArticleService
         return $result;
     }
 
-    private function getBannerUrl($banner)
-    {
-        $path = "banners/" . $banner;
-        $storage_path = Storage::has($path) ? Storage::url($path) : null;
-        return $storage_path;
-    }
-
     public function findArticleById($id)
     {
         $result = new ServiceResult();
@@ -97,7 +87,7 @@ class ArticleService
                 $result->setSuccess(true);
                 $result->setData([
                     "article" => $article,
-                    "banner_url" => $this->getBannerUrl($article["banner"]),
+                    "banner_url" => get_banner_url($article["banner"]),
                     "meta_title" => $metadata["title"] ?? "",
                     "meta_tags" => $metadata["tags"] ?? "",
                     "meta_description" => $metadata["description"] ?? ""

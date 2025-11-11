@@ -45,3 +45,9 @@ function upload_banner_image($file)
 
     return null;
 }
+
+function get_banner_url($banner) {
+    $path = "banners/" . $banner;
+    $storage_path = Storage::has($path) ? Storage::url($path) : null;
+    return $storage_path;
+}

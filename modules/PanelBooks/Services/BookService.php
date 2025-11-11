@@ -2,34 +2,22 @@
 
 namespace Module\PanelBooks\Services;
 
-use Papyrus\Database\Pdo;
-use Papyrus\Support\Storage;
 use Exception;
 use Module\Main\ServiceResult;
-use Module\PanelBooks\Queries\GetBookCount;
-use Module\PanelBooks\Queries\InsertBook;
-use Module\PanelBooks\Queries\PaginateBooks;
-use Module\PanelBooks\Queries\FindBookById;
-use Module\PanelBooks\Queries\UpdateBookById;
-use Module\PanelBooks\Queries\UpdateBookStatus;
+use Module\PanelBooks\Repositories\BookRepository;
 
 class BookService {
+    private BookRepository $bookRepository;
+
+    public function __construct() {
+        $this->bookRepository = new BookRepository();
+    }
+
     public function addBook($request) {
         $result = new ServiceResult();
 
         try {
-            $query = Pdo::execute(new InsertBook([
-                ":title" => $request->sanitizeInput("title"),
-                ":description" => $request->input("description"),
-                ":banner" => $this->uploadBannerImage($request->file("banner")),
-                ":tags" => $request->sanitizeInput("tags"),
-                ":slug" => $request->sanitizeInput("slug"),
-                ":metadata" => json_encode([
-                    "title" => $request->sanitizeInput("meta_title") ?? "",
-                    "description" => $request->sanitizeInput("meta_description") ?? "",
-                    "tags" => $request->sanitizeInput("meta_tags") ?? ""
-                ])
-            ]));
+            $query = $this->bookRepository->create($request);
 
             $result->setSuccess(true);
             $result->setMessage("Book has been saved successfully.");
@@ -48,16 +36,13 @@ class BookService {
         $result = new ServiceResult();
 
         try {
-            $totalRows = (int) $this->getBookCount();
+            $totalRows = (int) $this->bookRepository->getCount();
             $limit = 10;
             $currentPage = (int) $request->param("page") ?? 1;
             $currentPage = max(1, $currentPage);
             $totalPages = ceil($totalRows / $limit);
             $offset = ($currentPage - 1) * $limit;
-            $query = Pdo::execute(new PaginateBooks([
-                ":limit" => (int) $limit,
-                ":offset" => (int) $offset
-            ]));
+            $query = $this->bookRepository->getPaginatedListing($limit, $offset);
 
             $prev_page = $currentPage - 1;
             $prev_page = $prev_page < 0 ? 1 : $prev_page;
@@ -86,14 +71,14 @@ class BookService {
         $result = new ServiceResult();
 
         try {
-            $query = Pdo::execute(new FindBookById([":id" => $id]));
+            $query = $this->bookRepository->findById($id);
             if ($query->count() > 0) {
                 $book = $query->first();
                 $metadata = $this->getMetaData($book["metadata"]);
                 $result->setSuccess(true);
                 $result->setData([
                     "book" => $book,
-                    "banner_url" => $this->getBannerUrl($book["banner"]),
+                    "banner_url" => get_banner_url($book["banner"]),
                     "meta_title" => $metadata["title"] ?? "",
                     "meta_tags" => $metadata["tags"] ?? "",
                     "meta_description" => $metadata["description"] ?? ""
@@ -113,8 +98,7 @@ class BookService {
         $result = new ServiceResult();
 
         try {
-            $queryClass = $this->makeUpdateQuery($request, $id);
-            $query = Pdo::execute($queryClass);
+            $query = $this->bookRepository->updateById($id, $request);
 
             $result->setSuccess(true);
             $result->setMessage("Updated book successfully, rows effected : " . $query->getAffectedRows());
@@ -133,10 +117,7 @@ class BookService {
             $initialStatus = $request->sanitizeInput("status", "draft");
             $status = $initialStatus === "published" ? "draft" : "published";
             unset($initialStatus);
-            $query = Pdo::execute(new updateBookStatus([
-                ":status" => $status,
-                ":id" => $id
-            ]));
+            $query = $this->bookRepository->updateStatus($id, $status);
             if (!$query->getAffectedRows()) {
                 throw new Exception("Error in updating status");
             }
@@ -150,79 +131,10 @@ class BookService {
         return $result;
     }
 
-    private function makeUpdateQuery($request, $id) {
-        $query = new UpdateBookById();
-        $query->init();
-        $data = [];
-        $data[":id"] = $id;
-        $metadata = [
-            "title" => $request->sanitizeInput("meta_title") ?? "",
-            "tags" => $request->sanitizeInput("meta_tags") ?? "",
-            "description" => $request->sanitizeInput("meta_description") ?? ""
-        ];
-
-        if($request->hasInput("title")) {
-            $query->update("title", ":title");
-            $data[":title"] = $request->sanitizeInput("title");
-        }
-
-        if ($request->hasInput("description")) {
-            $query->update("description", ":description");
-            $data[":description"] = $request->input("description");
-        }
-
-        if ($request->hasInput("slug")) {
-            $query->update("slug", ":slug");
-            $data[":slug"] = $request->sanitizeInput("slug");
-        }
-
-        if ($request->hasInput("tags")) {
-            $query->update("tags", ":tags");
-            $data[":tags"] = $request->sanitizeInput("tags");
-        }
-
-        if ($request->hasFile("banner")) {
-            $banner = $this->uploadBannerImage($request->file("banner"));
-            $query->update("banner", ":banner");
-            $data[":banner"] = $banner;
-        }
-        $query->update("metadata", ":metadata");
-        $data[":metadata"] = json_encode($metadata);
-        $query->where("WHERE id = :id");
-        $query->setArgs($data);
-
-        return $query;
-    }
-
     private function getMetaData($data)
     {
         $data = json_decode($data, true);
 
         return $data;
-    }
-
-    private function getBannerUrl($banner)
-    {
-        $path = "banners/" . $banner;
-        $storage_path = Storage::has($path) ? Storage::url($path) : null;
-        return $storage_path;
-    }
-
-    private function getBookCount() {
-        $query = Pdo::execute(new GetBookCount());
-        $count = $query->first()["count"];
-
-        return (int) $count;
-    }
-
-    private function uploadBannerImage($file)
-    {
-        $name = date("Ymdhsi");
-        $storage = Storage::open($file, $name, "banners");
-        if ($storage->upload()) {
-            return $storage->getName();
-        }
-
-        return null;
     }
 }

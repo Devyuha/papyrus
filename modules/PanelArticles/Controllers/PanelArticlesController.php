@@ -63,7 +63,7 @@ class PanelArticlesController extends Controller
         $responseStatus = $response->getSuccess() ? "success" : "error";
 
         Flash::make($responseStatus, $response->getMessage());
-        return response()->redirect(route("panel.articles.create"));
+        return response()->redirect(route("panel.articles"));
     }
 
     public function updateArticle($id)

@@ -7,8 +7,6 @@ use Papyrus\Support\Storage;
 use Exception;
 use Module\Main\ServiceResult;
 use Module\PanelArticles\Repositories\ArticleRepository;
-use Module\PanelArticles\Queries\InsertArticle;
-use Module\PanelArticles\Queries\UpdateArticleById;
 
 class ArticleService
 {
@@ -23,18 +21,7 @@ class ArticleService
         $result = new ServiceResult();
 
         try {
-            $query = Pdo::execute(new InsertArticle([
-                ":title" => $request->sanitizeInput("title"),
-                ":content" => $request->input("content"),
-                ":banner" => upload_banner_image($request->file("banner")),
-                ":tags" => $request->sanitizeInput("tags"),
-                ":slug" => $request->sanitizeInput("slug"),
-                ":metadata" => json_encode([
-                    "title" => $request->sanitizeInput("meta_title") ?? "",
-                    "description" => $request->sanitizeInput("meta_description") ?? "",
-                    "tags" => $request->sanitizeInput("meta_tags") ?? ""
-                ])
-            ]));
+            $query = $this->articleRepository->create($request);
 
             $result->setSuccess(true);
             $result->setMessage("Article has been saved successfully.");

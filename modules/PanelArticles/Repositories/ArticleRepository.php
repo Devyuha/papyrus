@@ -8,6 +8,7 @@
     use Module\PanelArticles\Queries\FindArticleById;
     use Module\PanelArticles\Queries\UpdateArticleStatus;
     use Module\PanelArticles\Queries\UpdateArticleById;
+    use Module\PanelArticles\Queries\InsertArticle;
 
     class ArticleRepository
     {
@@ -78,5 +79,20 @@
             $query->setArgs($data);
 
             return $query;
+        }
+
+        public function create($request) {
+            return Pdo::execute(new InsertArticle([
+                ":title" => $request->sanitizeInput("title"),
+                ":content" => $request->input("content"),
+                ":banner" => upload_banner_image($request->file("banner")),
+                ":tags" => $request->sanitizeInput("tags"),
+                ":slug" => $request->sanitizeInput("slug"),
+                ":metadata" => json_encode([
+                    "title" => $request->sanitizeInput("meta_title") ?? "",
+                    "description" => $request->sanitizeInput("meta_description") ?? "",
+                    "tags" => $request->sanitizeInput("meta_tags") ?? ""
+                ])
+            ]));
         }
     }

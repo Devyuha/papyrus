@@ -7,5 +7,6 @@ return [
     "PanelArticles",
     "Media",
     "PanelBooks",
+    "PanelPages",
     "Components"
 ];

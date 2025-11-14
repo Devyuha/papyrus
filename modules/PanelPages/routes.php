@@ -1,5 +1,8 @@
 <?php
 
-    use Papyrus\Http\Router;
+use Module\Panel\Middlewares\CheckAuthMiddleware;
+use Papyrus\Http\Router;
 
-    Router::get("/panelpages", [Module\PanelPages\Controllers\PanelPagesController::class, 'index']);
+Router::get("/panel/books/{id}/page/create", [Module\PanelPages\Controllers\PanelPagesController::class, 'createPage'])
+    ->addMiddleware(CheckAuthMiddleware::class)
+    ->name("panel.pages.create");

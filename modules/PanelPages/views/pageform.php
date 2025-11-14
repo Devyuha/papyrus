@@ -14,12 +14,27 @@
             <div class="md:col-span-4">
                 <div class="card">
                     <div class="card-header">
-                        <h6 class="card-title">Book Settings</h6>
+                        <h6 class="card-title">Page Settings</h6>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
                             <label class="form-label" for="url">Slug</label>
                             <input type="text" class="form-control" name="slug" id="slug" value="<?= $slug ?? old('slug') ?>" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="type">Type</label>
+                            <select class="form-control" name="type" id="type">
+                                <option value="page" <?= (isset($type) && $type === "page") ? "selected" : "" ?>>Page</option>
+                                <option value="chapter" <?= (isset($type) && $type === "chapter") ? "selected" : "" ?>>Chapter</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="parent">Parent</label>
+                            <select class="form-control" name="parent" id="parent">
+                                <option value=""></option>
+                            </select>
                         </div>
 
                         <div class="form-group">

@@ -16,7 +16,7 @@
     <div class="section-body">
         <?php $this->includes("includes/messages", null, "Auth") ?>
 
-        <p>This is a book view page</p>
+        <p>Total Books are : <?= $pages->count(); ?></p>
     </div>
 </div>
 

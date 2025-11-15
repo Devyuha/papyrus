@@ -8,7 +8,7 @@
                 </div>
                 <div class="mb-3">
                     <div id="editor-container" class="editor-container"></div>
-                    <input type="hidden" name="description" id="editor-content" value='<?= $description ?? old('description') ?>' />
+                    <input type="hidden" name="content" id="editor-content" value='<?= $content ?? old('content') ?>' />
                 </div>
             </div>
             <div class="md:col-span-4">

@@ -5,6 +5,8 @@ namespace Module\PanelPages\Controllers;
 use Module\PanelBooks\Services\BookService;
 use Papyrus\Http\Controller;
 use Papyrus\Support\Facades\Flash;
+use Module\PanelPages\Requests\CreatePageRequest;
+use Module\PanelPages\Services\PageService;
 
 class PanelPagesController extends Controller
 {
@@ -24,5 +26,21 @@ class PanelPagesController extends Controller
         return view("create", compact("book"))
             ->module("PanelPages")
             ->render();
+    }
+
+    public function addPage($id) {
+        $request = new CreatePageRequest();
+        if(!$request->validated()) {
+            $request->remember();
+            Flash::make("error", $request->errors());
+            return response()->redirect(route("panel.books.view", ["id" => $id]));
+        }
+
+        $service = new PageService();
+        $result = $service->createPage($id, $request);
+        $responseStatus = $result->getSuccess() ? "success" : "error";
+        Flash::make($responseStatus, $result->getMessage());
+
+        return response()->redirect(route("panel.books.view", ["id" => $id]));
     }
 }

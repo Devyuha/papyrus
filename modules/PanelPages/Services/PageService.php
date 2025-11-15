@@ -48,4 +48,23 @@
 
             return $result;
         }
+
+        public function createPage($book_id, $request) {
+            $result = new ServiceResult();
+
+            try {
+                $query = $this->pageRepository->create($book_id, $request);
+                
+                $result->setSuccess(true);
+                $result->setMessage("Page has been created successfully.");
+                $result->setData([
+                    "id" => $query->getId()
+                ]);
+            } catch (Exception $e) {
+                $result->setSuccess(false);
+                $result->setMessage($e->getMessage());
+            }
+
+            return $result;
+        }
     }

@@ -20,3 +20,15 @@
   font-size: 13px;
   letter-spacing: 0.5px;
 }
+
+.table-label {
+  @apply py-1 px-3 font-sans text-sm rounded;
+
+  &.chapter {
+    @apply bg-primary-400 text-light-100;
+  }
+
+  &.page {
+    @apply bg-primary-100 text-light-100;
+  }
+}

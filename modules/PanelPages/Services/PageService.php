@@ -67,4 +67,35 @@
 
             return $result;
         }
+
+        public function getChapterTitles($book_id) {
+            return $this->pageRepository->getChapterTitles($book_id);
+        }
+
+        public function findPageById($page_id) {
+            $result = new ServiceResult();
+
+            try {
+                $query = $this->pageRepository->findById($page_id);
+                if($query->count() > 0) {
+                    $page = $query->first();
+                    $metadata = getMetaData($page["metadata"]);
+                    $result->setSuccess(true);
+                    $result->setData([
+                        "page" => $page,
+                        "banner_url" => get_banner_url($page["banner"]),
+                        "meta_title" => $metadata["title"],
+                        "meta_description" => $metadata["description"],
+                        "meta_tags" => $metadata["tags"]
+                    ]);
+                } else {
+                    throw new Exception("Page Not Found.");
+                }
+            } catch(Exception $e) {
+                $result->setSuccess(false);
+                $result->setMessage($e->getMessage());
+            }
+
+            return $result;
+        }
     }

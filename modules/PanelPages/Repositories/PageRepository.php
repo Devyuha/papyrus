@@ -6,6 +6,8 @@
     use Module\PanelPages\Queries\PaginatePages;
     use Module\PanelPages\Queries\GetPageCount;
     use Module\PanelPages\Queries\CreatePageQuery;
+    use Module\PanelPages\Queries\GetChaptersList;
+    use Module\PanelPages\Queries\FindPageById;
 
     class PageRepository
     {
@@ -41,6 +43,18 @@
                 ":type" => $request->sanitizeInput("type", "page"),
                 ":book_id" => $book_id,
                 ":parent_id" => (int) $request->sanitizeInput("parent", 0)
+            ]));
+        }
+
+        public function getChapterTitles($book_id) {
+            return Pdo::execute(new GetChaptersList([
+                ":book_id" => $book_id
+            ]));
+        }
+
+        public function findById($page_id) {
+            return Pdo::execute(new FindPageById([
+                ":page_id" => $page_id
             ]));
         }
     }

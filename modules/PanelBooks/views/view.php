@@ -70,7 +70,10 @@
                                 </form>
                             </td>
                             <td>
-                                <a href="<?= route("panel.books.edit", ["id" => $book['id']]) ?>">
+                                <a href="<?= route("panel.pages.edit", [
+                                    "book_id" => $book['id'],
+                                    "page_id" => $page["id"]
+                                ]) ?>">
                                     <button class="btn btn-sm btn-primary">Edit</button>
                                 </a>
                                 <?php if($page["type"] === "chapter") : ?>
@@ -83,6 +86,8 @@
                     <?php endforeach ?>
                 </tbody>
             <?php $template->endComponent() ?>
+        <?php else : ?>
+            <p>No Pages Found!</p>
         <?php endif ?>
     </div>
 </div>

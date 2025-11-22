@@ -2,7 +2,7 @@
 
 <?php $template->includes("includes/pagebar", [
     "pageTitle" => "Create New Page",
-    "pageNavs" => ["Home", "Books", "Pages", "Create"],
+    "pageNavs" => ["Home", "Books", "Pages", "Edit"],
     "buttons" => [
         [
             "link" => route("panel.books.view", ["id" => $book["id"]]),
@@ -16,7 +16,16 @@
     <div class="section-body">
         <?php $template->includes("pageform", [
             "formUrl" => route("panel.pages.add", ["id" => $book["id"]]),
-            "chapters" => $chapters ?? null
+            "chapters" => $chapters ?? null,
+            "title" => $page["title"] ?? "",
+            "content" => $page["content"] ?? "",
+            "slug" => $page["slug"] ?? "",
+            "parent_id" => $page["parent_id"] ?? "",
+            "tags" => $page["tags"] ?? "",
+            "banner_url" => $pageData["banner_url"] ?? "",
+            "meta_title" => $pageData["meta_title"] ?? "",
+            "meta_description" => $pageData["meta_description"] ?? "",
+            "meta_tags" => $pageData["meta_tags"] ?? ""
         ], "PanelPages") ?>
     </div>
 </div>

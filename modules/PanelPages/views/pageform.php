@@ -23,17 +23,22 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label" for="type">Type</label>
-                            <select class="form-control" name="type" id="type">
+                            <label class="form-label" for="page_type">Type</label>
+                            <select class="form-control" name="type" id="page_type">
                                 <option value="page" <?= (isset($type) && $type === "page") ? "selected" : "" ?>>Page</option>
                                 <option value="chapter" <?= (isset($type) && $type === "chapter") ? "selected" : "" ?>>Chapter</option>
                             </select>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" id="page_parent">
                             <label class="form-label" for="parent">Parent</label>
                             <select class="form-control" name="parent" id="parent">
                                 <option value=""></option>
+                                <?php if(isset($chapters) && $chapters->count() > 0) : ?>
+                                    <?php foreach($chapters->getData() as $chapter) : ?>
+                                        <option value="<?= $chapter["id"] ?>" <?= (isset($parent_id) && $parent_id === $chapter["id"]) ? "selected" : "" ?>><?= $chapter["title"] ?></option>
+                                    <?php endforeach ?>
+                                <?php endif ?>
                             </select>
                         </div>
 

@@ -98,4 +98,20 @@
 
             return $result;
         }
+
+        public function updatePage($request, $id) {
+            $result = new ServiceResult();
+
+            try {
+                $query = $this->pageRepository->updateById($id, $request);
+
+                $result->setSuccess(true);
+                $result->setMessage("Updated page successfully, rows effected : ". $query->getAffectedRows());
+            } catch(Exception $e) {
+                $result->setSuccess(false);
+                $result->setMessage($e->getMessage());
+            }
+
+            return $result;
+        }
     }

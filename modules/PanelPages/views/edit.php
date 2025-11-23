@@ -15,7 +15,7 @@
 <div class="content-section">
     <div class="section-body">
         <?php $template->includes("pageform", [
-            "formUrl" => route("panel.pages.add", ["id" => $book["id"]]),
+            "formUrl" => route("panel.pages.edit", ["book_id" => $book["id"], "page_id" => $page["id"]]),
             "chapters" => $chapters ?? null,
             "title" => $page["title"] ?? "",
             "content" => $page["content"] ?? "",

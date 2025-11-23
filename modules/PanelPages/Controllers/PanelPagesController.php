@@ -7,6 +7,7 @@ use Papyrus\Http\Controller;
 use Papyrus\Support\Facades\Flash;
 use Module\PanelPages\Requests\CreatePageRequest;
 use Module\PanelPages\Services\PageService;
+use Module\PanelPages\Requests\UpdatePageRequest;
 
 class PanelPagesController extends Controller
 {
@@ -68,5 +69,20 @@ class PanelPagesController extends Controller
         Flash::make($responseStatus, $result->getMessage());
 
         return response()->redirect(route("panel.books.view", ["id" => $id]));
+    }
+
+    public function updatePage($book_id, $page_id) {
+        $request = new UpdatePageRequest();
+        if(!$request->validated()) {
+            $request->remember();
+            Flash::make("error", $request->errors());
+            return response()->redirect(route("panel.books.view", ["id" => $book_id]));
+        }
+
+        $service = new PageService();
+        $response = $service->updatePage($request, $page_id);
+        $status = $response->getSuccess() ? "success" : "error";
+        Flash::make($status, $response->getMessage());
+        return response()->redirect(route("panel.books.view", ["id" => $book_id]));
     }
 }

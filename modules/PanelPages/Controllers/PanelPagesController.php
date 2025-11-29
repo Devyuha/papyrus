@@ -8,6 +8,7 @@ use Papyrus\Support\Facades\Flash;
 use Module\PanelPages\Requests\CreatePageRequest;
 use Module\PanelPages\Services\PageService;
 use Module\PanelPages\Requests\UpdatePageRequest;
+use Module\PanelPages\Requests\UpdateStatusRequest;
 
 class PanelPagesController extends Controller
 {
@@ -84,5 +85,22 @@ class PanelPagesController extends Controller
         $status = $response->getSuccess() ? "success" : "error";
         Flash::make($status, $response->getMessage());
         return response()->redirect(route("panel.books.view", ["id" => $book_id]));
+    }
+
+    public function updatePageStatus($book_id, $page_id) {
+        $request = new UpdateStatusRequest();
+        if(!$request->validated()) {
+            Flash::make("error", $request->errors());
+            return response()->redirect(route("panel.books.view", ["id" => $book_id]));
+        }
+
+        $service = new PageService();
+        $result = $service->updatePageStatus($request, $page_id);
+        $status = $result->getSuccess() ? "success" : "error";
+        Flash::make($status, $result->getMessage());
+        return response()
+                ->redirect(route("panel.books.view", [
+                    "id" => $book_id
+                ]));
     }
 }

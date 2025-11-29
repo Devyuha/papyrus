@@ -59,7 +59,7 @@
                                 </form>
                             </td>
                             <td>
-                                <form action='' method="POST" onsubmit="return confirm('Are you sure you want to update?')">
+                                <form action='<?= route("panel.pages.status", ["book_id" => $book["id"], "page_id" => $page["id"]]) ?>' method="POST" onsubmit="return confirm('Are you sure you want to update?')">
                                     <?= form_method("PATCH") ?>
                                     <input type="hidden" name="status" value="<?= $page['status'] ?? 'draft' ?>" />
                                     <?php if ($page["status"] === "published") : ?>

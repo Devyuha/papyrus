@@ -9,6 +9,7 @@
     use Module\PanelPages\Queries\GetChaptersList;
     use Module\PanelPages\Queries\FindPageById;
     use Module\PanelPages\Queries\UpdatePageById;
+    use Module\PanelPages\Queries\UpdatePageStatus;
 
     class PageRepository
     {
@@ -102,5 +103,12 @@
             $query->setArgs($data);
 
             return Pdo::execute($query);
+        }
+
+        public function updateStatus($id, $status) {
+            return Pdo::execute(new UpdatePageStatus([
+                ":status" => $status,
+                ":id" => $id
+            ]));
         }
     }

@@ -19,3 +19,7 @@ Router::get("/panel/books/{book_id}/page/{page_id}/edit", [PanelPagesController:
 Router::post("/panel/books/{book_id}/page/{page_id}/edit", [PanelPagesController::class, "updatePage"])
     ->addMiddleware(CheckAuthMiddleware::class)
     ->name("panel.pages.update");
+
+Router::patch("/panel/books/{book_id}/pages/{page_id}/status", [PanelPagesController::class, "updatePageStatus"])
+    ->addMiddleware(CheckAuthMiddleware::class)
+    ->name("panel.pages.status");

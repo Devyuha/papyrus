@@ -26,6 +26,14 @@
     <div class="section-body">
         <?php $this->includes("includes/messages", null, "Auth") ?>
 
+        <form action="" class="page-order-form" method="POST" onsubmit="return confirm('Are you sure you want to update?')">
+            <?= form_method("PATCH") ?>
+            <input type="hidden" name="book_id" value="<?= $chapter["book_id"] ?>" />
+            <input type="hidden" name="pages_order" value="" />
+            <button type="submit" class="btn btn-sm-block btn-primary page-order-submit">Update Order</button>
+        </form>
+        <br />
+
         <?php if (isset($pages) && $pages->count() > 0) : ?>
             <?php $template->component("components/table", null, "Main") ?>
             <thead>
@@ -47,21 +55,16 @@
                             <span class="table-label <?= $page["type"] ?>"><?= ucfirst($page["type"]) ?></span>
                         </td>
                         <td>
-                            <form action="" method="POST" onsubmit="return confirm('Are you sure you want to update?')">
-                                <?= form_method("PATCH") ?>
-                                <input type="hidden" name="book_id" value="<?= $book["id"] ?>" />
-                                <input type="hidden" name="page_id" value="<?= $page["id"] ?>" />
-                                <select class="table-input" name="order_no">
-                                    <option value="" disabled <?= is_null($page["order_no"]) ? "selected" : "" ?>></option>
-                                    <?php for ($i = 1; $i <= $pages->count(); $i++) : ?>
-                                        <option
-                                            value="<?= $i ?>"
-                                            <?= $page["order_no"] == $i ? "selected" : "" ?>>
-                                            <?= $i ?>
-                                        </option>
-                                    <?php endfor ?>
-                                </select>
-                            </form>
+                            <select class="table-input page-order-input" name="order_no" data-page="<?= $page["id"] ?>">
+                                <option value="" disabled <?= is_null($page["order_no"]) ? "selected" : "" ?>></option>
+                                <?php for ($i = 1; $i <= $pages->count(); $i++) : ?>
+                                    <option
+                                        value="<?= $i ?>"
+                                        <?= $page["order_no"] == $i ? "selected" : "" ?>>
+                                        <?= $i ?>
+                                    </option>
+                                <?php endfor ?>
+                            </select>
                         </td>
                         <td>
                             <form action='<?= route("panel.pages.status", ["book_id" => $chapter["book_id"], "page_id" => $page["id"]]) ?>' method="POST" onsubmit="return confirm('Are you sure you want to update?')">

@@ -53,7 +53,7 @@ class Article {
         if(pageType && pageParent) {
             pageType.addEventListener("change", (e) => {
                 const value = e.target.value;
-                if(value === "chapter") {
+                if(value === "page") {
                     pageParent.style.display = "block";
                 } else {
                     pageParent.style.display = "none";
@@ -69,7 +69,7 @@ class Article {
 
             if(pageType && pageParent) {
                 const value = pageType.value;
-                if(value === "chapter") {
+                if(value === "page") {
                     pageParent.style.display = "block";
                 } else {
                     pageParent.style.display = "none";

@@ -23,3 +23,7 @@ Router::post("/panel/books/{book_id}/page/{page_id}/edit", [PanelPagesController
 Router::patch("/panel/books/{book_id}/pages/{page_id}/status", [PanelPagesController::class, "updatePageStatus"])
     ->addMiddleware(CheckAuthMiddleware::class)
     ->name("panel.pages.status");
+
+Router::get("/panel/books/{book_id}/pages/{page_id}/view", [PanelPagesController::class, "viewPage"])
+    ->addMiddleware(CheckAuthMiddleware::class)
+    ->name("panel.pages.view");

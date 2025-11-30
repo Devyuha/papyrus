@@ -16,7 +16,9 @@
     <div class="section-body">
         <?php $template->includes("pageform", [
             "formUrl" => route("panel.pages.add", ["id" => $book["id"]]),
-            "chapters" => $chapters ?? null
+            "chapters" => $chapters ?? null,
+            "type" => $type,
+            "parent_id" => $parent
         ], "PanelPages") ?>
     </div>
 </div>

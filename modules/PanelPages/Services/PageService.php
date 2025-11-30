@@ -5,6 +5,7 @@ namespace Module\PanelPages\Services;
 use Exception;
 use Module\Main\ServiceResult;
 use Module\PanelPages\Repositories\PageRepository;
+use Module\PanelBooks\Services\BookService;
 
 class PageService
 {
@@ -130,12 +131,62 @@ class PageService
             $status = $initialStatus === "published" ? "draft" : "published";
             unset($initialStatus);
             $query = $this->pageRepository->updateStatus($id, $status);
-            if(!$query->getAffectedRows()) {
+            if (!$query->getAffectedRows()) {
                 throw new Exception("Error in updating status");
             }
             $result->setSuccess(true);
             $result->setMessage("Page status has been updated successfully.");
         } catch (Exception $e) {
+            $result->setSuccess(false);
+            $result->setMessage($e->getMessage());
+        }
+
+        return $result;
+    }
+
+
+    public function getPageListingByChapter($page_id, $book_id, $request)
+    {
+        $result = new ServiceResult();
+
+        try {
+            $totalRows = (int) $this->pageRepository->getCountByChapter($page_id, $book_id);
+            $limit = 10;
+            $currentPage = (int) $request->param("page") ?? 1;
+            $currentPage = max(1, $currentPage);
+            $totalPages = ceil($totalRows / $limit);
+            $offset = ($currentPage - 1) * $limit;
+            $query = $this->pageRepository->getPaginatedListByChapter($book_id, $page_id, $limit, $offset);
+
+            $prev_page = $currentPage - 1;
+            $prev_page = $prev_page < 0 ? 0 : $prev_page;
+            $next_page = $currentPage + 1;
+            $next_page = $next_page > $totalPages ? 0 : $next_page;
+
+            $result->setSuccess(true);
+            $result->setData([
+                "pages" => $query,
+                "meta" => [
+                    "total_pages" => $totalPages,
+                    "current_page" => $currentPage,
+                    "prev_page" => $prev_page,
+                    "next_page" => $next_page
+                ]
+            ]);
+        } catch (Exception $e) {
+            $result->setSuccess(false);
+            $result->setMessage($e->getMessage());
+        }
+
+        return $result;
+    }
+
+    public function getChapterInfo($page_id, $book_id, $request) {
+        $result = new ServiceResult();
+
+        try {
+            // 
+        } catch(Exception $e) {
             $result->setSuccess(false);
             $result->setMessage($e->getMessage());
         }

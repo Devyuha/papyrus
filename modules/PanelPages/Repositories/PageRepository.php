@@ -10,6 +10,8 @@
     use Module\PanelPages\Queries\FindPageById;
     use Module\PanelPages\Queries\UpdatePageById;
     use Module\PanelPages\Queries\UpdatePageStatus;
+    use Module\PanelPages\Queries\GetPagesByChapter;
+    use Module\PanelPages\Queries\GetPagesCountByChapter;
 
     class PageRepository
     {
@@ -24,6 +26,16 @@
         public function getCountByBook($bookId) {
             $query = Pdo::execute(new GetPageCount([
                 ":book_id" => $bookId
+            ]));
+            $count = $query->first()["count"] ?? 0;
+
+            return (int) $count;
+        }
+
+        public function getCountByChapter($page_id, $book_id) {
+            $query = Pdo::execute(new GetPagesCountByChapter([
+                ":book_id" => $book_id,
+                ":parent_id" => $page_id
             ]));
             $count = $query->first()["count"] ?? 0;
 
@@ -109,6 +121,15 @@
             return Pdo::execute(new UpdatePageStatus([
                 ":status" => $status,
                 ":id" => $id
+            ]));
+        }
+
+        public function getPaginatedListByChapter($book_id, $page_id, $limit, $offset) {
+            return Pdo::execute(new GetPagesByChapter([
+                ":book_id" => $book_id,
+                ":parent_id" => $page_id,
+                ":limit" => $limit,
+                ":offset" => $offset
             ]));
         }
     }

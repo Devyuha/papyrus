@@ -9,6 +9,7 @@ use Module\PanelPages\Requests\CreatePageRequest;
 use Module\PanelPages\Services\PageService;
 use Module\PanelPages\Requests\UpdatePageRequest;
 use Module\PanelPages\Requests\UpdateStatusRequest;
+use Papyrus\Http\Request;
 
 class PanelPagesController extends Controller
 {
@@ -17,6 +18,8 @@ class PanelPagesController extends Controller
     }
 
     public function createPage($id) {
+        $request = new Request();
+        
         $bookResult = (new BookService)->findBookById($id);
         if(!$bookResult->getSuccess()) {
             Flash::make("error", $bookResult->getMessage());
@@ -25,8 +28,11 @@ class PanelPagesController extends Controller
         $bookData = $bookResult->getData();
         $book = $bookData["book"];
         $chapters = (new PageService)->getChapterTitles($id);
+
+        $type = $request->param("type", "page");
+        $parent = $request->param("parent", null);
         
-        return view("create", compact("book", "chapters"))
+        return view("create", compact("book", "chapters", "type", "parent"))
             ->module("PanelPages")
             ->render();
     }
@@ -102,5 +108,30 @@ class PanelPagesController extends Controller
                 ->redirect(route("panel.books.view", [
                     "id" => $book_id
                 ]));
+    }
+
+    public function viewPage($book_id, $page_id) {
+        $service = new PageService();
+        $request = new Request();
+
+        $chapterResult = $service->findPageById($page_id);
+        if(!$chapterResult->getSuccess()) {
+            Flash::make("error", $chapterResult->getMessage());
+            return response()->redirect(route("panel.books.view", ["id" => $book_id]));
+        }
+
+        $pageResult = $service->getPageListingByChapter($page_id, $book_id, $request);
+        if(!$pageResult->getSuccess()) {
+            Flash::make("error", $pageResult->getMessage());
+        }
+        $pageData = $pageResult->getData();
+        $pages = $pageData["pages"];
+
+        $chapterData = $chapterResult->getData();
+        $chapter = $chapterData["page"];
+
+        return view("view", compact("chapter", "pages"))
+            ->module("PanelPages")
+            ->render();
     }
 }

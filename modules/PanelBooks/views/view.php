@@ -1,7 +1,7 @@
 <?php $template->includes("includes/header", null, "Panel") ?>
 
 <?php $template->includes("includes/pagebar", [
-    "pageTitle" => "Books",
+    "pageTitle" => $book["title"] ?? "View Book",
     "pageNavs" => ["Home", "Books", $book["title"]],
     "buttons" => [
         [
@@ -77,7 +77,7 @@
                                     <button class="btn btn-sm btn-primary">Edit</button>
                                 </a>
                                 <?php if($page["type"] === "chapter") : ?>
-                                    <a href="">
+                                    <a href="<?= route("panel.pages.view", ["book_id" => $book["id"], "page_id" => $page["id"]]) ?>">
                                         <button class="btn btn-sm btn-info">View</button>
                                     </a>
                                 <?php endif ?>

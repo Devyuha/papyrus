@@ -21,9 +21,8 @@
     <div class="section-body">
         <?php $this->includes("includes/messages", null, "Auth") ?>
 
-        <form action="" class="page-order-form" method="POST" onsubmit="return confirm('Are you sure you want to update?')">
+        <form action="<?= route("panel.pages.orderno", ["book_id" => $book["id"]]) ?>" class="page-order-form" method="POST" onsubmit="return confirm('Are you sure you want to update?')">
             <?= form_method("PATCH") ?>
-            <input type="hidden" name="book_id" value="<?= $book["id"] ?>" />
             <input type="hidden" name="pages_order" value="" />
             <button type="submit" class="btn btn-sm-block btn-primary page-order-submit">Update Order</button>
         </form>

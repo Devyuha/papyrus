@@ -27,3 +27,7 @@ Router::patch("/panel/books/{book_id}/pages/{page_id}/status", [PanelPagesContro
 Router::get("/panel/books/{book_id}/pages/{page_id}/view", [PanelPagesController::class, "viewPage"])
     ->addMiddleware(CheckAuthMiddleware::class)
     ->name("panel.pages.view");
+
+Router::patch("/panel/books/{book_id}/order", [PanelPagesController::class, "updateBookPagesOrder"])
+    ->addMiddleware(CheckAuthMiddleware::class)
+    ->name("panel.pages.orderno");

@@ -6,6 +6,7 @@ use Exception;
 use Module\Main\ServiceResult;
 use Module\PanelPages\Repositories\PageRepository;
 use Module\PanelBooks\Services\BookService;
+use Papyrus\Support\Facades\Logger;
 
 class PageService
 {
@@ -181,11 +182,16 @@ class PageService
         return $result;
     }
 
-    public function getChapterInfo($page_id, $book_id, $request) {
+    public function updatePageOrder($request) {
         $result = new ServiceResult();
 
         try {
-            // 
+            $orders = $request->input("pages_order", "{}");
+            $orders = json_decode($orders, true);
+            $stmt = $this->pageRepository->updatePagesOrder($orders);
+
+            $result->setSuccess(true);
+            $result->setMessage("Updated pages order successfully!");
         } catch(Exception $e) {
             $result->setSuccess(false);
             $result->setMessage($e->getMessage());

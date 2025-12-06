@@ -8,6 +8,7 @@ use Papyrus\Support\Facades\Flash;
 use Module\PanelPages\Requests\CreatePageRequest;
 use Module\PanelPages\Services\PageService;
 use Module\PanelPages\Requests\UpdatePageRequest;
+use Module\PanelPages\Requests\UpdateOrderRequest;
 use Module\PanelPages\Requests\UpdateStatusRequest;
 use Papyrus\Http\Request;
 
@@ -133,5 +134,28 @@ class PanelPagesController extends Controller
         return view("view", compact("chapter", "pages"))
             ->module("PanelPages")
             ->render();
+    }
+
+    public function updateBookPagesOrder($book_id) {
+        $request = new UpdateOrderRequest();
+        if(!$request->validated()) {
+            Flash::make("error", $request->errors());
+            return response()->redirect(route("panel.books.view", ["id" => $book_id]));
+        }
+
+        $result = (new PageService)->updatePageOrder($request);
+        $status = $result->getSuccess() ? "success" : "error";
+        Flash::make($status, $result->getMessage());
+
+        $route = route("panel.books.view", ["id" => $book_id]);
+        if($request->hasInput("page_id")) {
+            $page_id = $request->sanitizeInput("page_id");
+            $route = route("panel.pages.view", [
+                "book_id" => $book_id,
+                "page_id" => $page_id
+            ]);
+        }
+
+        return response()->redirect($route);
     }
 }

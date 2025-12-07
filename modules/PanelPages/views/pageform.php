@@ -8,18 +8,38 @@
                 </div>
                 <div class="mb-3">
                     <div id="editor-container" class="editor-container"></div>
-                    <input type="hidden" name="description" id="editor-content" value='<?= $description ?? old('description') ?>' />
+                    <input type="hidden" name="content" id="editor-content" value='<?= $content ?? old('content') ?>' />
                 </div>
             </div>
             <div class="md:col-span-4">
                 <div class="card">
                     <div class="card-header">
-                        <h6 class="card-title">Book Settings</h6>
+                        <h6 class="card-title">Page Settings</h6>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
                             <label class="form-label" for="url">Slug</label>
                             <input type="text" class="form-control" name="slug" id="slug" value="<?= $slug ?? old('slug') ?>" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="page_type">Type</label>
+                            <select class="form-control" name="type" id="page_type">
+                                <option value="page" <?= (isset($type) && $type === "page") ? "selected" : "" ?>>Page</option>
+                                <option value="chapter" <?= (isset($type) && $type === "chapter") ? "selected" : "" ?>>Chapter</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="page_parent">
+                            <label class="form-label" for="parent">Parent</label>
+                            <select class="form-control" name="parent" id="parent">
+                                <option value=""></option>
+                                <?php if(isset($chapters) && $chapters->count() > 0) : ?>
+                                    <?php foreach($chapters->getData() as $chapter) : ?>
+                                        <option value="<?= $chapter["id"] ?>" <?= (isset($parent_id) && $parent_id === $chapter["id"]) ? "selected" : "" ?>><?= $chapter["title"] ?></option>
+                                    <?php endforeach ?>
+                                <?php endif ?>
+                            </select>
                         </div>
 
                         <div class="form-group">

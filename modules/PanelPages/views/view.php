@@ -1,16 +1,21 @@
 <?php $template->includes("includes/header", null, "Panel") ?>
 
 <?php $template->includes("includes/pagebar", [
-    "pageTitle" => $book["title"] ?? "View Book",
-    "pageNavs" => ["Home", "Books", $book["title"]],
+    "pageTitle" => $chapter["title"] ?? "View Chapter",
+    "pageNavs" => ["Home", "Chapter", $chapter["title"]],
     "buttons" => [
         [
-            "link" => route("panel.pages.create", ["id" => $book["id"]]),
+            "link" => route("panel.pages.create", [
+                "id" => $chapter["book_id"]
+            ], [
+                "type" => "page",
+                "parent" => $chapter["id"]
+            ]),
             "class" => "btn btn-sm btn-primary",
             "text" => "Create Page"
         ],
         [
-            "link" => route("panel.books"),
+            "link" => route("panel.books.view", ["id" => $chapter["book_id"]]),
             "class" => "btn btn-sm btn-warning",
             "text" => "Back"
         ]
@@ -21,8 +26,9 @@
     <div class="section-body">
         <?php $this->includes("includes/messages", null, "Auth") ?>
 
-        <form action="<?= route("panel.pages.orderno", ["book_id" => $book["id"]]) ?>" class="page-order-form" method="POST" onsubmit="return confirm('Are you sure you want to update?')">
+        <form action="<?= route("panel.pages.orderno", ["book_id" => $chapter["book_id"]]) ?>" class="page-order-form" method="POST" onsubmit="return confirm('Are you sure you want to update?')">
             <?= form_method("PATCH") ?>
+            <input type="hidden" name="page_id" value="<?= $chapter["id"] ?>" />
             <input type="hidden" name="pages_order" value="" />
             <button type="submit" class="btn btn-sm-block btn-primary page-order-submit">Update Order</button>
         </form>
@@ -49,7 +55,7 @@
                             <span class="table-label <?= $page["type"] ?>"><?= ucfirst($page["type"]) ?></span>
                         </td>
                         <td>
-                            <select class="table-input page-order-input" data-page="<?= $page["id"] ?>" name="order_no">
+                            <select class="table-input page-order-input" name="order_no" data-page="<?= $page["id"] ?>">
                                 <option value="" disabled <?= is_null($page["order_no"]) ? "selected" : "" ?>></option>
                                 <?php for ($i = 1; $i <= $pages->count(); $i++) : ?>
                                     <option
@@ -61,7 +67,7 @@
                             </select>
                         </td>
                         <td>
-                            <form action='<?= route("panel.pages.status", ["book_id" => $book["id"], "page_id" => $page["id"]]) ?>' method="POST" onsubmit="return confirm('Are you sure you want to update?')">
+                            <form action='<?= route("panel.pages.status", ["book_id" => $chapter["book_id"], "page_id" => $page["id"]]) ?>' method="POST" onsubmit="return confirm('Are you sure you want to update?')">
                                 <?= form_method("PATCH") ?>
                                 <input type="hidden" name="status" value="<?= $page['status'] ?? 'draft' ?>" />
                                 <?php if ($page["status"] === "published") : ?>
@@ -73,13 +79,13 @@
                         </td>
                         <td>
                             <a href="<?= route("panel.pages.edit", [
-                                            "book_id" => $book['id'],
+                                            "book_id" => $chapter['book_id'],
                                             "page_id" => $page["id"]
                                         ]) ?>">
                                 <button class="btn btn-sm btn-primary">Edit</button>
                             </a>
                             <?php if ($page["type"] === "chapter") : ?>
-                                <a href="<?= route("panel.pages.view", ["book_id" => $book["id"], "page_id" => $page["id"]]) ?>">
+                                <a href="">
                                     <button class="btn btn-sm btn-info">View</button>
                                 </a>
                             <?php endif ?>

@@ -51,3 +51,13 @@ function get_banner_url($banner) {
     $storage_path = Storage::has($path) ? Storage::url($path) : null;
     return $storage_path;
 }
+
+function getMetaData($data) {
+    $data = json_decode($data, true);
+
+    return [
+        "title" => $data["title"] ?? "",
+        "description" => $data["description"] ?? "",
+        "tags" => $data["tags"] ?? ""
+    ];
+}

@@ -90,7 +90,7 @@
         }
 
         public function updateStatus($id, $status) {
-            return Pdo::execute(new updateBookStatus([
+            return Pdo::execute(new UpdateBookStatus([
                 ":status" => $status,
                 ":id" => $id
             ]));

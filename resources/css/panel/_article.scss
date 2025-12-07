@@ -12,4 +12,8 @@
     .article-title {
       @apply border-0 outline-none text-2xl w-full font-bold tracking-[0.5px];
     }
+
+    #page_parent {
+      display: none;
+    }
 }

@@ -8,6 +8,8 @@ class Article {
         if(form) {
             this.processSlug();
             this.bannerPreview();
+            this.handlePageParent();
+            this.handlePageParentOnLoad();
         }
     }
 
@@ -42,6 +44,38 @@ class Article {
                 bannerPreview.style.display = "none";
             }
         })
+    }
+
+    handlePageParent() {
+        const pageType = document.getElementById("page_type");
+        const pageParent = document.getElementById("page_parent");
+
+        if(pageType && pageParent) {
+            pageType.addEventListener("change", (e) => {
+                const value = e.target.value;
+                if(value === "page") {
+                    pageParent.style.display = "block";
+                } else {
+                    pageParent.style.display = "none";
+                }
+            });
+        }
+    }
+
+    handlePageParentOnLoad() {
+        document.addEventListener("DOMContentLoaded", () => {
+            const pageType = document.getElementById("page_type");
+            const pageParent = document.getElementById("page_parent");
+
+            if(pageType && pageParent) {
+                const value = pageType.value;
+                if(value === "page") {
+                    pageParent.style.display = "block";
+                } else {
+                    pageParent.style.display = "none";
+                }
+            }
+        });
     }
 }
 

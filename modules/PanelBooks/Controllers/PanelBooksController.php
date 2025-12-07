@@ -3,6 +3,7 @@
 namespace Module\PanelBooks\Controllers;
 
 use Module\PanelBooks\Services\BookService;
+use Module\PanelPages\Services\PageService;
 use Papyrus\Http\Controller;
 use Papyrus\Support\Facades\Flash;
 use Papyrus\Http\Request;
@@ -24,15 +25,23 @@ class PanelBooksController extends Controller
 
     public function viewBook($id) {
         $service = new BookService();
+        $request = new Request();
         $result = $service->findBookById($id);
         if(!$result->getSuccess()) {
             Flash::make("error", $result->getMessage());
             return response()->redirect(route("panel.books"));
         }
 
+        $pageService = (new PageService)->getPageListing($id, $request);
+        if(!$pageService->getSuccess()) {
+            Flash::make("error", $pageService->getMessage());
+        }
+        $pageData = $pageService->getData();
+        $pages = $pageData["pages"];
+
         $data = $result->getData();
         $book = $data["book"];
-        return view("view", compact("book"))
+        return view("view", compact("book", "pages"))
                 ->module("PanelBooks")
                 ->render();
     }

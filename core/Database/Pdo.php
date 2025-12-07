@@ -5,6 +5,7 @@ namespace Papyrus\Database;
 use PDO as DB;
 use PDOException;
 use Papyrus\Database\Utils\Config;
+use Papyrus\Database\PreparedStatement;
 
 class Pdo
 {
@@ -33,6 +34,13 @@ class Pdo
         }
 
         return self::$instance->connection;
+    }
+
+    public static function prepare(Query $query) {
+        $sql = $query->sql();
+        $stmt = self::getInstance()->prepare($sql);
+        
+        return new PreparedStatement($stmt);
     }
 
     public static function execute(Query $query)

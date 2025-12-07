@@ -28,6 +28,10 @@
     &.btn-sm {
         @apply py-[3px] px-[5px] rounded-md text-xs tracking-[0.5px];
     }
+
+    &.btn-sm-block {
+        @apply py-[3px] px-[5px] text-xs tracking-[0.5px];
+    }
     
     &.btn-lg {
         @apply py-[5px] px-[10px] rounded-md text-sm tracking-[0.5px];

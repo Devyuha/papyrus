@@ -20,7 +20,6 @@
 
         public function getPassword() {
             $userId = auth()->user("id");
-            logger()->debug("User ID :: " . $userId);
             $query = Pdo::execute(new GetOldPassword([
                 ":id" => $userId
             ]));

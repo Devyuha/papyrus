@@ -58,7 +58,6 @@
 
         private function verifyPassword($password) {
             $old_password = $this->userRepository->getPassword();
-            logger()->debug("Old Password :: " . $old_password);
             return Password::verify($password, $old_password);
         }
     }

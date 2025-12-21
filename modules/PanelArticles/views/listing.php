@@ -14,7 +14,7 @@
 
     <div class="content-section">
         <div class="section-body">
-            <?php $this->includes("includes/messages", null, "Auth") ?>
+            <?php $this->includes("includes/messages", ["meta" => $meta], "Auth") ?>
 
             <?php if (isset($articles) && $articles->count() > 0) : ?>
                 <?php $template->component("components/table", null, "Main") ?>

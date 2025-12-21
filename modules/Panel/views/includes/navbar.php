@@ -14,8 +14,6 @@
                 </div>
                 <div class="dropdown-menu" id="userDropdown">
                     <a href="<?= route("panel.profile") ?>" class="dropdown-item">Profile</a>
-                    <a href="#" class="dropdown-item">Settings</a>
-                    <a href="#" class="dropdown-item">Help</a>
                     <a href="<?= route("auth.logout") ?>" class="dropdown-item">Logout</a>
                 </div>
             </div>

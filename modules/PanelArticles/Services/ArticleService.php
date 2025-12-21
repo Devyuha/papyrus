@@ -63,9 +63,20 @@ class ArticleService
             $offset = ($currentPage - 1) * $limit;
             $query = $this->articleRepository->getPaginatedListing($limit, $offset);
 
+            $prev_page = $currentPage - 1;
+            $prev_page = $prev_page < 0 ? 1 : $prev_page;
+            $next_page = $currentPage + 1;
+            $next_page = $next_page > $totalPages ? 0 : $next_page;
+
             $result->setSuccess(true);
             $result->setData([
-                "articles" => $query
+                "articles" => $query,
+                 "meta" => [
+                    "total_pages" => $totalPages,
+                    "current_page" => $currentPage,
+                    "prev_page" => $prev_page,
+                    "next_page" => $next_page
+                ]
             ]);
         } catch (Exception $e) {
             $result->setSuccess(false);

@@ -13,17 +13,18 @@
                     </button>
                 </span>
             <?php else : ?>
-                <a href="" class="page-button">
+                <a href="<?= get_url(["page" => $meta["current_page"] - 1]) ?>" class="page-button">
                     <button>
                         <i class="fa fa-long-arrow-left"></i>
+                        Prev
                     </button>
                 </a>
             <?php endif ?>
 
             <?php if($meta["total_pages"] && $meta["total_pages"] > 0) : ?>
-                <?php for($i = 0; $i < $meta["total_pages"]; $i++) : ?>
-                    <a href="" class="page-button <?= $i === 0 ? "active" : "" ?>">
-                        <button><?= $i+1 ?></button>
+                <?php for($i = 1; $i <= $meta["total_pages"]; $i++) : ?>
+                    <a href="<?= get_url(["page" => $i]) ?>" class="page-button <?= $i === $meta["current_page"] ? "active" : "" ?>">
+                        <button><?= $i ?></button>
                     </a>
                 <?php endfor ?>
             <?php endif ?>
@@ -36,7 +37,7 @@
                     </button>
                 </span>
             <?php else : ?>
-                <a href="" class="page-button">
+                <a href="<?= get_url(["page" => $meta["current_page"]+1]) ?>" class="page-button">
                     <button>
                         Next
                         <i class="fa fa-long-arrow-right"></i>

@@ -19,8 +19,8 @@
 
 <div class="content-section">
     <div class="section-body">
-        <?php $this->includes("includes/messages", null, "Auth") ?>
-
+        <?php $this->includes("includes/messages", ["meta" => $pages_meta], "Auth") ?>
+ 
         <form action="<?= route("panel.pages.orderno", ["book_id" => $book["id"]]) ?>" class="page-order-form" method="POST" onsubmit="return confirm('Are you sure you want to update?')">
             <?= form_method("PATCH") ?>
             <input type="hidden" name="pages_order" value="" />

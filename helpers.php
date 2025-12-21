@@ -2,6 +2,7 @@
 
 use Module\Auth\Facades\AuthUser;
 use Papyrus\Support\Storage;
+use Module\Main\Facades\Get;
 
 function form_method($method = "DELETE")
 {
@@ -60,4 +61,15 @@ function getMetaData($data) {
         "description" => $data["description"] ?? "",
         "tags" => $data["tags"] ?? ""
     ];
+}
+
+function get_url($params) {
+    $get = Get::init();
+    if(count($params) > 0) {
+        foreach($params as $key => $value) {
+            $get->param($key, $value);
+        }
+    }
+
+    return $get->generate();
 }

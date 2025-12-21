@@ -38,10 +38,11 @@ class PanelBooksController extends Controller
         }
         $pageData = $pageService->getData();
         $pages = $pageData["pages"];
+        $pages_meta = $pageData["meta"];
 
         $data = $result->getData();
         $book = $data["book"];
-        return view("view", compact("book", "pages"))
+        return view("view", compact("book", "pages", "pages_meta"))
                 ->module("PanelBooks")
                 ->render();
     }

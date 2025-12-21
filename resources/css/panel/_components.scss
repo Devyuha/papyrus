@@ -3,6 +3,32 @@
     @apply w-full overflow-x-auto;
 }
 
+.pagination {
+    @apply py-4;
+
+    .page-button {
+        button {
+            @apply py-1 px-2 rounded border border-solid border-dark-200 text-dark-200 border-collapse text-sm cursor-pointer;
+
+            &:hover {
+                @apply border border-solid border-primary-100 bg-primary-100 text-light;
+            }
+        }
+
+        &.active {
+            button {
+                @apply border border-solid border-primary bg-primary text-light;
+            }
+        }
+
+        &.disabled {
+            button {
+                @apply border-dark-300 text-dark-200 bg-dark-300;
+            }
+        }
+    }
+}
+
 .table {
     @apply w-full border-collapse text-left border border-solid border-dark-200;
 

@@ -69,6 +69,30 @@
                         </div>
                     </div>
                 </div>
+                <br/>
+                <div class="flex flex-col gap-4 p-5 border border-solid border-dark-100">
+                    <p class="text-dark-100 text-sm font-semibold">Pagination</p>
+                    
+                    <div class="pagination">
+                        <span class="page-button disabled">
+                            <button>
+                                <i class="fa fa-long-arrow-left"></i>
+                                Prev
+                            </button>
+                        </span>
+                        <?php for($i = 0; $i < 10; $i++) : ?>
+                            <a href="" class="page-button <?= $i === 0 ? "active" : "" ?>">
+                                <button><?= $i+1 ?></button>
+                            </a>
+                        <?php endfor ?>
+                        <a href="" class="page-button">
+                            <button>
+                                Next
+                                <i class="fa fa-long-arrow-right"></i>
+                            </button>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 

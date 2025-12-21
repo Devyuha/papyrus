@@ -17,7 +17,7 @@
         <?php $this->includes("includes/messages", null, "Auth") ?>
 
         <?php if (isset($books) && $books->count() > 0) : ?>
-            <?php $template->component("components/table", null, "Main") ?>
+            <?php $template->component("components/table", ["meta" => $meta], "Main") ?>
                 <thead>
                     <tr>
                         <th>ID</th>

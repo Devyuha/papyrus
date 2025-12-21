@@ -676,6 +676,14 @@ video {
   --tw-border-opacity: 1;
   border-color: rgb(34 34 34 / var(--tw-border-opacity, 1));
 }
+.border-dark-200{
+  --tw-border-opacity: 1;
+  border-color: rgb(61 63 67 / var(--tw-border-opacity, 1));
+}
+.border-dark-300{
+  --tw-border-opacity: 1;
+  border-color: rgb(181 187 199 / var(--tw-border-opacity, 1));
+}
 .border-dark-400{
   --tw-border-opacity: 1;
   border-color: rgb(206 212 218 / var(--tw-border-opacity, 1));
@@ -687,6 +695,10 @@ video {
 .border-primary{
   --tw-border-opacity: 1;
   border-color: rgb(22 153 118 / var(--tw-border-opacity, 1));
+}
+.border-primary-100{
+  --tw-border-opacity: 1;
+  border-color: rgb(0 148 143 / var(--tw-border-opacity, 1));
 }
 .bg-danger{
   --tw-bg-opacity: 1;
@@ -753,6 +765,10 @@ video {
 }
 .p-5{
   padding: 1.25rem;
+}
+.px-2{
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 .px-3{
   padding-left: 0.75rem;
@@ -850,6 +866,10 @@ video {
 .text-dark-100{
   --tw-text-opacity: 1;
   color: rgb(34 34 34 / var(--tw-text-opacity, 1));
+}
+.text-dark-200{
+  --tw-text-opacity: 1;
+  color: rgb(61 63 67 / var(--tw-text-opacity, 1));
 }
 .text-dark-300{
   --tw-text-opacity: 1;
@@ -1405,6 +1425,56 @@ body{
 .table-responsive{
   width: 100%;
   overflow-x: auto;
+}
+
+.pagination{
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.pagination .page-button button{
+  border-collapse: collapse;
+  border-radius: 0.25rem;
+  border-width: 1px;
+  border-style: solid;
+  --tw-border-opacity: 1;
+  border-color: rgb(61 63 67 / var(--tw-border-opacity, 1));
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  --tw-text-opacity: 1;
+  color: rgb(61 63 67 / var(--tw-text-opacity, 1));
+  cursor: pointer;
+}
+.pagination .page-button button:hover{
+  border-width: 1px;
+  border-style: solid;
+  --tw-border-opacity: 1;
+  border-color: rgb(0 148 143 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 148 143 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+.pagination .page-button.active button{
+  border-width: 1px;
+  border-style: solid;
+  --tw-border-opacity: 1;
+  border-color: rgb(22 153 118 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(22 153 118 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+.pagination .page-button.disabled button{
+  --tw-border-opacity: 1;
+  border-color: rgb(181 187 199 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(181 187 199 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(61 63 67 / var(--tw-text-opacity, 1));
 }
 
 .table{

@@ -35,7 +35,7 @@ class RegisterRequest extends Request
             ->email("Invalid email format");
 
         $this->field("password", $this->input("password"))
-            ->required("Password s required")
+            ->required("Password is required")
             ->equals($this->input("confirm_password"), "Password is not same as confirm password");
     }
 }

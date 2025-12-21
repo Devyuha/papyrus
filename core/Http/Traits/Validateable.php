@@ -99,10 +99,10 @@ trait Validateable
                 return $this;
             }
 
-            public function custom($callbash, $message = "Custom validation failed")
+            public function custom($callbask, $message = "Custom validation failed")
             {
                 if (!call_user_func($callbask, $this->value)) {
-                    $this->parent->error($key, $message);
+                    $this->parent->error($this->key, $message);
                 }
 
                 return $this;

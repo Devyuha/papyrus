@@ -41,6 +41,10 @@
         @apply py-2 px-4 w-full text-sm tracking-[0.5px];
     }
 
+    &.btn-sharp {
+        @apply rounded-none;
+    }
+
     &.btn-primary {
         @apply bg-primary text-light;
     }
